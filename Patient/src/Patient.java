@@ -1,206 +1,208 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class Patient {
-    HashMap<String,String> hmap;
+    ArrayList<String> contents;
 
     public void setID(String id)
     {
-        hmap.put("ID:", id);
+        contents.add(0,id);
     }
 
     public String getID()
     {
-        return hmap.get("ID:");
+        return contents.get(0);
     }
 
     public void setBirthDate(String date)
     {
-        hmap.put("BirthDate:", date);
+        contents.add(1,date);
     }
 
     public String getBirthDate()
     {
-        return hmap.get("BirthDate:");
+        return contents.get(1);
     }
 
     public void setDeathDate(String date)
     {
-        hmap.put("DeathDate:",date);
+        contents.add(2,date);
     }
 
     public String getDeathDate()
     {
-        return hmap.get("DeathDate:");
+        return contents.get(2);
     }
 
     public void setSSN(String ssn)
     {
-        hmap.put("SSN:",ssn);
+        contents.add(3,ssn);
     }
 
     public String getSsn()
     {
-        return hmap.get("SSN:");
+        return contents.get(3);
     }
 
     public void setDrivers(String drivers)
     {
-        hmap.put("Drivers:",drivers);
+        contents.add(4,drivers);
     }
 
     public String getDrivers()
     {
-        return hmap.get("Drivers:");
+        return contents.get(4);
     }
 
     public void setPassport(String passport)
     {
-        hmap.put("Passport:",passport);
+        contents.add(5,passport);
     }
 
     public String getPassport()
     {
-        return hmap.get("Passport:");
+        return contents.get(5);
     }
 
     public void setPrefix(String prefix)
     {
-        hmap.put("Prefix:",prefix);
+        contents.add(6,prefix);
     }
 
     public String getPrefix()
     {
-        return hmap.get("Prefix:");
+        return contents.get(6);
     }
 
     public void setFirst(String first)
     {
-        hmap.put("First:",first);
+        contents.add(7,first);
     }
 
     public String getFirst()
     {
-        return hmap.get("First:");
+        return contents.get(7);
     }
 
     public void setLast(String last)
     {
-        hmap.put("Last:",last);
+        contents.add(8,last);
     }
 
     public String getLast()
     {
-        return hmap.get("Last:");
+        return contents.get(8);
     }
 
     public void setSuffix(String suffix)
     {
-        hmap.put("Suffix:",suffix);
+        contents.add(9,suffix);
     }
 
     public String getSuffix()
     {
-        return hmap.get("Suffix:");
+        return contents.get(9);
     }
 
     public void setMaiden(String maiden)
     {
-        hmap.put("Maiden",maiden);
+        contents.add(10,maiden);
     }
 
     public String getMaiden()
     {
-        return hmap.get("Maiden:");
+        return contents.get(10);
     }
 
     public void setMarital(String marital)
     {
-        hmap.put("Marital:",marital);
+        contents.add(11,marital);
     }
 
     public String getMarital()
     {
-        return hmap.get("Marital:");
+        return contents.get(11);
     }
 
     public void setRace(String race)
     {
-        hmap.put("Race:",race);
+        contents.add(12,race);
     }
 
     public String getRace()
     {
-        return hmap.get("Race:");
+        return contents.get(12);
     }
 
     public void setEthnicity(String ethnicity)
     {
-        hmap.put("Ethnicity:",ethnicity);
+        contents.add(13,ethnicity);
     }
 
     public String getEthnicity()
     {
-        return hmap.get("Ethnicity:");
+        return contents.get(13);
     }
 
     public void setGender(String gender)
     {
-        hmap.put("Gender:",gender);
+        contents.add(14,gender);
     }
 
     public String getGender()
     {
-        return hmap.get("Gender:");
+        return contents.get(14);
     }
 
     public void setBirthPlace(String birthPlace)
     {
-        hmap.put("BirthPlace:",birthPlace);
+        contents.add(15,birthPlace);
     }
 
     public String getBirthPlace()
     {
-        return hmap.get("BirthPlace:");
+        return contents.get(15);
     }
 
     public void setAddress(String address)
     {
-        hmap.put("Address:",address);
+        contents.add(16,address);
     }
 
     public String getAddress()
     {
-        return hmap.get("Address:");
+        return contents.get(16);
     }
 
     public void setCity(String city)
     {
-        hmap.put("City:",city);
+        contents.add(17,city);
     }
 
     public String getCity()
     {
-        return hmap.get("City:");
+        return contents.get(17);
     }
 
     public void setState(String state)
     {
-        hmap.put("State:",state);
+        contents.add(18,state);
     }
 
     public String getState()
     {
-        return hmap.get("State:");
+        return contents.get(18);
     }
 
     public void setZip(String zip)
     {
-        hmap.put("Zip:",zip);
+        contents.add(19,zip);
     }
 
     public String getZip()
     {
-        return hmap.get("Zip:");
+        return contents.get(19);
     }
+
+
 }
