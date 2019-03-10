@@ -13,7 +13,7 @@ public class ReadCSV {
     List<Method> setters = new ArrayList<>();
     List<Patient> patientList = new ArrayList<>();
 
-    public List<Patient> readCSV() throws FileNotFoundException {
+    public List<Patient> readCSV() throws FileNotFoundException, InvocationTargetException, IllegalAccessException {
         Scanner sc = new Scanner(new File("User/Desktop"));
         sc.useDelimiter(",");
         while (sc.hasNext()) {
@@ -22,7 +22,7 @@ public class ReadCSV {
             getMethods();
             for(Method curMethod:setters)
             {
-                Patient inputPatient = curMethod.invoke(patient,fileInput);
+                Patient inputPatient = (Patient) curMethod.invoke(patient,fileInput);
                 patientList.add(inputPatient);
             }
         }return patientList;
