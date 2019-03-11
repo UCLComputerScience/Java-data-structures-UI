@@ -7,7 +7,8 @@ public class JSONFormatter {
     {
         str.append("{\n");
         str.append("\t" + "\"" + "patients" + "\"" + ": [");
-        for (int i = 0; i < inputList.size(); i++){
+        int patientListSize = inputList.size();
+        for (int i = 0; i < patientListSize; i++){
             str.append("\n\t\t{\n");
             Object curPatient = inputList.get(i);
             ArrayList<String> keys = new ArrayList<>(((Patient) curPatient).contents.keySet());
@@ -28,7 +29,8 @@ public class JSONFormatter {
                     str.append("\"" + curValue + "\"");
                     str.append("\n");
                 }
-                }str.append("\t\t},");
+                }if (i < patientListSize - 1){ str.append("\t\t},");}
+                else{str.append("\t\t}");}
             }
             str.append("\n");
             str.append("\t]");
