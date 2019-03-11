@@ -1,207 +1,207 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Patient {
-    ArrayList<String> contents = new ArrayList<>();
+    HashMap<String, String> contents = new HashMap<>();
 
     public void setID(String id)
     {
-        contents.add(0,id);
+        contents.put("ID",id);
     }
 
     public String getID()
     {
-        return contents.get(0);
+        return contents.get("ID");
     }
 
     public void setBirthDate(String date)
     {
-        contents.add(1,date);
+        contents.put("BirthDate",date);
     }
 
     public String getBirthDate()
     {
-        return contents.get(1);
+        return contents.get("BirthDate");
     }
 
     public void setDeathDate(String date)
     {
-        contents.add(2,date);
+        contents.put("DeathDate",date);
     }
 
     public String getDeathDate()
     {
-        return contents.get(2);
+        return contents.get("DeathDate");
     }
 
     public void setSSN(String ssn)
     {
-        contents.add(3,ssn);
+        contents.put("SSN",ssn);
     }
 
     public String getSsn()
     {
-        return contents.get(3);
+        return contents.get("SSN");
     }
 
     public void setDrivers(String drivers)
     {
-        contents.add(4,drivers);
+        contents.put("Drivers",drivers);
     }
 
     public String getDrivers()
     {
-        return contents.get(4);
+        return contents.get("Drivers");
     }
 
     public void setPassport(String passport)
     {
-        contents.add(5,passport);
+        contents.put("Passport",passport);
     }
 
     public String getPassport()
     {
-        return contents.get(5);
+        return contents.get("Passport");
     }
 
     public void setPrefix(String prefix)
     {
-        contents.add(6,prefix);
+        contents.put("Prefix",prefix);
     }
 
     public String getPrefix()
     {
-        return contents.get(6);
+        return contents.get("Prefix");
     }
 
     public void setFirst(String first)
     {
-        contents.add(7,first);
+        contents.put("First",first);
     }
 
     public String getFirst()
     {
-        return contents.get(7);
+        return contents.get("First");
     }
 
     public void setLast(String last)
     {
-        contents.add(8,last);
+        contents.put("Last",last);
     }
 
     public String getLast()
     {
-        return contents.get(8);
+        return contents.get("Last");
     }
 
     public void setSuffix(String suffix)
     {
-        contents.add(9,suffix);
+        contents.put("Suffix",suffix);
     }
 
     public String getSuffix()
     {
-        return contents.get(9);
+        return contents.get("Suffix");
     }
 
     public void setMaiden(String maiden)
     {
-        contents.add(10,maiden);
+        contents.put("Maiden",maiden);
     }
 
     public String getMaiden()
     {
-        return contents.get(10);
+        return contents.get("Maiden");
     }
 
     public void setMarital(String marital)
     {
-        contents.add(11,marital);
+        contents.put("Marital",marital);
     }
 
     public String getMarital()
     {
-        return contents.get(11);
+        return contents.get("Marital");
     }
 
     public void setRace(String race)
     {
-        contents.add(12,race);
+        contents.put("Race",race);
     }
 
     public String getRace()
     {
-        return contents.get(12);
+        return contents.get("Race");
     }
 
     public void setEthnicity(String ethnicity)
     {
-        contents.add(13,ethnicity);
+        contents.put("Ethnicity",ethnicity);
     }
 
     public String getEthnicity()
     {
-        return contents.get(13);
+        return contents.get("Ethnicity");
     }
 
     public void setGender(String gender)
     {
-        contents.add(14,gender);
+        contents.put("Gender",gender);
     }
 
     public String getGender()
     {
-        return contents.get(14);
+        return contents.get("Gender");
     }
 
     public void setBirthPlace(String birthPlace)
     {
-        contents.add(15,birthPlace);
+        contents.put("BirthPlace",birthPlace);
     }
 
     public String getBirthPlace()
     {
-        return contents.get(15);
+        return contents.get("Birthplace");
     }
 
-    public void setAddress(String address)
+    public void setAddress(String Address)
     {
-        contents.add(16,address);
+        contents.put("Address",Address);
     }
 
     public String getAddress()
     {
-        return contents.get(16);
+        return contents.get("Address");
     }
 
     public void setCity(String city)
     {
-        contents.add(17,city);
+        contents.put("City",city);
     }
 
     public String getCity()
     {
-        return contents.get(17);
+        return contents.get("City");
     }
 
     public void setState(String state)
     {
-        contents.add(18,state);
+        contents.put("State",state);
     }
 
     public String getState()
     {
-        return contents.get(18);
+        return contents.get("State");
     }
 
     public void setZip(String zip)
     {
-        contents.add(19,zip);
+        contents.put("Zip",zip);
     }
 
     public String getZip()
     {
-        return contents.get(19);
+        return contents.get("Zip");
     }
 
 

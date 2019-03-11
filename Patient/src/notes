@@ -1,0 +1,20 @@
+        if     (fileInput == "ID"||
+                fileInput == "BIRTHDATE" ||
+                fileInput == "SSN" ||
+                fileInput == "DRIVERS" ||
+                fileInput =="PASSPORT" ||
+                fileInput == "PREFIX"||
+                fileInput == "FIRST" ||
+                fileInput == "LAST" ||
+                fileInput == "SUFFIX" ||
+                fileInput == "MAIDEN" ||
+                fileInput == "MARITAL" ||
+                fileInput == "RACE" ||
+                fileInput == "ETHNICITY" ||
+                fileInput == "GENDER" ||
+                fileInput == "BIRTHPLACE" ||
+                fileInput == "ADDRESS" ||
+                fileInput == "CITY" ||
+                fileInput == "STATE" ||
+                fileInput == "ZIP"){ return; }
+        else{
