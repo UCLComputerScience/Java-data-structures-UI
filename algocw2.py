@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+from pylab import imshow, show, get_cmap
 
 file1 = "view1.png"
 leftImg = Image.open(file1).convert('L')
@@ -10,12 +11,17 @@ file2 = "view2.png"
 rightImg = Image.open(file2).convert('L')
 rightWidth, rightHeight = rightImg.size
 
+Z1 = np.random.random((512,512))
+imshow(Z1, cmap=get_cmap("gray"), interpolation='nearest')
+show()
+Z2 = np.random.random((256,256))
+imshow(Z2, cmap=get_cmap("gray"), interpolation='nearest')
+show()
 
-occlusion = 3.8
+occlusion = 2.6
 disparity_map = [[0]*(leftWidth) for i in range(leftHeight)]
 disparity_array = np.asarray(disparity_map)
 C = [[0]*(rightWidth+1) for i in range(leftWidth+1)]
-
 
 def cFunction(z1,z2):
     z = (0.5 * z1) + (0.5 * z2)
