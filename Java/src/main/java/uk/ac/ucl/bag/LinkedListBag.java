@@ -170,10 +170,10 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public T next() {
-            int x = tmpNode.occurrences;
+            cOccurrences = tmpNode.occurrences;
             T cValue = tmpNode.value;
             if(hasNext()) {
-                if (x > count) {
+                if (cOccurrences > count) {
                     count++;
                     return cValue;
                 } else {

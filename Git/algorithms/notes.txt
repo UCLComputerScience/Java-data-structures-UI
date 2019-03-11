@@ -1,0 +1,11 @@
+
+
+
+print("------------------------Quick Sort-------------------")
+print("Quick time: ", quickTime)
+print("Quick Compare: ", quickComparisons)
+print("Quick Swaps: ", quickSwaps)
+print("------------------------Heap Sort------------------- ")
+print("Heap Time: ", heapTime)
+print("Heap Compare: ", heapCompare)
+print("Heap Swaps: ", heapSwaps)

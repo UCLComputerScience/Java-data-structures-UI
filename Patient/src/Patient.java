@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 
 public class Patient {
-    ArrayList<String> contents;
+    ArrayList<String> contents = new ArrayList<>();
 
     public void setID(String id)
     {

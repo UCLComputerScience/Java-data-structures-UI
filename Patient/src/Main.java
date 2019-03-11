@@ -1,6 +1,16 @@
+import java.util.List;
+
 public class Main {
-    public static void Main(String[] args)
+    public static void main(String[] args)
     {
-        System.out.println();
+        try {
+            ReadCSV csvInput = new ReadCSV();
+            List<Patient> str = csvInput.readCSV();
+            System.out.println(str.toString());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception thrown");
+        }
     }
 }
