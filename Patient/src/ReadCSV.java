@@ -8,7 +8,7 @@ public class ReadCSV {
     List<Patient> patientList = new ArrayList<>();
     private int index = 0;
 
-    public List<Patient> readCSV() throws FileNotFoundException {
+    public List<Patient> ReadCSV() throws FileNotFoundException {
         Scanner sc = new Scanner(new File("C:/Users/Lian/Desktop/cw2Data/patients100.csv"));
         sc.useDelimiter(",|\n");
         while (sc.hasNext()) {

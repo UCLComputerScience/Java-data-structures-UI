@@ -5,9 +5,13 @@ public class Main {
     {
         try {
             ReadCSV csvInput = new ReadCSV();
-            List<Patient> str = csvInput.readCSV();
-            System.out.println(str.toString());
-            System.out.println(str.get(0));
+            JSONFormatter Json = new JSONFormatter();
+            List<Patient> str = csvInput.ReadCSV();
+           /* System.out.println(str.toString());*/
+            System.out.println("----------------JSON TEST--------------------------");
+            String output = Json.JSONFormatter(str);
+            System.out.println(output);
+
         }
         catch (Exception e)
         {
