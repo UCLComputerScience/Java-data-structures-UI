@@ -6,12 +6,19 @@ public class Main {
         try {
             Model model = new Model();
             model.readFile();
-            String testStrPatientID = model.getAllIDs();
-            String testStrPatientName = model.getAllNames();
-            String testStrJsonAll = model.getAllPatient();
-            String testStrJsonSingle = model.getSinglePatient(52);
+
+            /*String testStrPatientID = model.getAllIDs();
             System.out.println(testStrPatientID);
-            System.out.println(testStrPatientName);
+            String testStrPatientName = model.getAllNames();
+            System.out.println(testStrPatientName);*/
+
+
+            /*String testStrJsonAll = model.getAllPatient();
+            System.out.println(testStrJsonAll);
+            String testStrJsonSingle = model.getSinglePatient(52);
+            System.out.println(testStrJsonSingle);*/
+
+
             /*ReadCSV csvInput = new ReadCSV();
             JSONFormatter Json = new JSONFormatter();
             List<Patient> str = csvInput.ReadCSV("C:/Users/Lian/Desktop/cw2Data/patients100.csv");

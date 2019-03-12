@@ -1,14 +1,15 @@
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Model {
     ReadCSV files = new ReadCSV();
     Scanner sc = new Scanner(System.in);
     JSONFormatter json = new JSONFormatter();
     List<Patient> str;
-    List<String> patientListID;
-    List<String> patientFullNames;
+    List<String> patientListID = new ArrayList<>();
+    List<String> patientFullNames = new ArrayList<>();
 
 
     public void readFile() throws FileNotFoundException {
@@ -32,18 +33,18 @@ public class Model {
 
     public String getAllIDs() {
         StringBuilder stringBuild = new StringBuilder();
+        stringBuild.append("{\n");
+        stringBuild.append("\t" + "\"" + "patients IDs" + "\"" + ": [\n");
         for (int i = 0; i < str.size(); i++) {
             Object patientReference = str.get(i);
             String patientID = ((Patient) patientReference).getID();
             patientListID.add(patientID);
-            stringBuild.append("{\n");
-            stringBuild.append("\t" + "\"" + "patients IDs" + "\"" + ": [");
-            int listSize = patientListID.size();
-            for (int x = 0; x < listSize; x++) {
-                stringBuild.append(patientListID.get(x));
+            for (int x = 0; x < patientListID.size(); x++) {
+                stringBuild.append("\t\t" + patientListID.get(x));
                 stringBuild.append("\n");
             }
         }
+        stringBuild.append("\t ]");
         String output = stringBuild.toString();
         return output;
     }
@@ -51,20 +52,21 @@ public class Model {
     public String getAllNames()
     {
         StringBuilder stringBuild = new StringBuilder();
+        stringBuild.append("{\n");
+        stringBuild.append("\t" + "\"" + "patients Full Names" + "\"" + ": [\n");
         for (int i = 0; i < str.size(); i++) {
             Object patientReference = str.get(i);
             String patientFirstName = ((Patient) patientReference).getFirst();
             String patientLastName = ((Patient) patientReference).getLast();
             String fullName = patientFirstName + patientLastName;
             patientFullNames.add(fullName);
-            stringBuild.append("{\n");
-            stringBuild.append("\t" + "\"" + "patients Full Names" + "\"" + ": [");
-            int listSize = patientFullNames.size();
-            for (int x = 0; x < listSize; x++) {
-                stringBuild.append(patientFullNames.get(x));
+            for (int x = 0; x < patientFullNames.size(); x++) {
+                stringBuild.append("\t\t" + patientFullNames.get(x));
                 stringBuild.append("\n");
             }
-        }String ouput = stringBuild.toString();
+        }
+        stringBuild.append("\t]");
+        String ouput = stringBuild.toString();
         return ouput;
     }
 }

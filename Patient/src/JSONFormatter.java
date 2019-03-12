@@ -5,6 +5,7 @@ public class JSONFormatter {
     StringBuilder str = new StringBuilder();
     public String JSONFormatterAll(List<Patient> inputList)
     {
+        StringBuilder str = new StringBuilder();
         str.append("{\n");
         str.append("\t" + "\"" + "patients" + "\"" + ": [");
         int patientListSize = inputList.size();
@@ -42,6 +43,7 @@ public class JSONFormatter {
 
 
     public String JSONFormatterSingle(List<Patient> inputList, int index) {
+        StringBuilder str = new StringBuilder();
         str.append("{\n");
         str.append("\t" + "\"" + "patients" + "\"" + ": [");
         str.append("\n\t\t{\n");
