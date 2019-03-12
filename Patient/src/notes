@@ -47,3 +47,15 @@
                 String returnStr = str.toString();
                 return returnStr;
             }
+
+
+
+
+            "C:/Users/Lian/Desktop/cw2Data/patients100.csv"
+
+
+
+            System.out.println("Please input filepath");
+                    String input = sc.nextLine();
+                    sc.close();
+                    str = files.ReadCSV(input);

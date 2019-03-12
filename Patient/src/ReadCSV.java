@@ -8,14 +8,13 @@ public class ReadCSV {
     List<Patient> patientList = new ArrayList<>();
     private int index = 0;
 
-    public List<Patient> ReadCSV() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("C:/Users/Lian/Desktop/cw2Data/patients100.csv"));
+    public List<Patient> ReadCSV(String input) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File(input));
         sc.useDelimiter(",|\n");
         while (sc.hasNext()) {
             Patient patient = new Patient();
             for (int i = 0;i<20;i++){
                 String fileInput = sc.next();
-                fileInput = readNull(fileInput);
                 chooseMethods(fileInput, patient);
                 ++index;
             }index = 0;
@@ -93,12 +92,4 @@ public class ReadCSV {
 
 
 
-    private String readNull(String fileInput) {
-        if (fileInput == "") {
-            fileInput = "null";
-            return fileInput;
-        } else {
-            return fileInput;
-        }
-    }
 }
