@@ -18,3 +18,32 @@
                 fileInput == "STATE" ||
                 fileInput == "ZIP"){ return; }
         else{
+
+        }
+
+
+
+
+            public String JSONFormatterSingle(List<Patient> inputList, int index) {
+                str.append("{\n");
+                str.append("\t" + "\"" + "patients" + "\"" + ": [");
+                str.append("\n\t\t{\n");
+                Object curPatient = inputList.get(index);
+                ArrayList<String> keys = new ArrayList<>(((Patient) curPatient).contents.keySet());
+                for (int x = 0; x < ((Patient) curPatient).contents.size() ; x ++) {
+                    str.append("\t\t" );
+                    str.append("\"" + keys.get(x) + "\"");
+                    str.append(": ");
+                    String curValue = ((Patient) curPatient).contents.get(keys.get(x));
+                    str.append("\"" + curValue + "\"");
+                    str.append(",");
+                    str.append("\n");
+                }
+                str.append("\t\t}");
+                str.append("\n");
+                str.append("\t]");
+                str.append("\n");
+                str.append("}");
+                String returnStr = str.toString();
+                return returnStr;
+            }
