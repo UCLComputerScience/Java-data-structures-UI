@@ -8,15 +8,12 @@ public class Model {
     Scanner sc = new Scanner(System.in);
     JSONFormatter json = new JSONFormatter();
     List<Patient> str;
-    List<String> patientListID = new ArrayList<>();
     List<String> patientFullNames = new ArrayList<>();
 
 
-    public void readFile() throws FileNotFoundException {
-        System.out.println("Please input filepath");
-        String input = sc.nextLine();
-        sc.close();
+    public List readFile(String input) throws FileNotFoundException {
         str = files.ReadCSV(input);
+        return str;
     }
 
     public String getAllPatient()
@@ -31,22 +28,14 @@ public class Model {
         return output;
     }
 
-    public String getAllIDs() {
-        StringBuilder stringBuild = new StringBuilder();
-        stringBuild.append("{\n");
-        stringBuild.append("\t" + "\"" + "patients IDs" + "\"" + ": [\n");
+    public List getAllIDs() {
+        List<String> patientListID = new ArrayList<>();
         for (int i = 0; i < str.size(); i++) {
             Object patientReference = str.get(i);
             String patientID = ((Patient) patientReference).getID();
             patientListID.add(patientID);
-            for (int x = 0; x < patientListID.size(); x++) {
-                stringBuild.append("\t\t" + patientListID.get(x));
-                stringBuild.append("\n");
-            }
         }
-        stringBuild.append("\t ]");
-        String output = stringBuild.toString();
-        return output;
+        return patientListID;
     }
 
     public String getAllNames()
@@ -58,7 +47,7 @@ public class Model {
             Object patientReference = str.get(i);
             String patientFirstName = ((Patient) patientReference).getFirst();
             String patientLastName = ((Patient) patientReference).getLast();
-            String fullName = patientFirstName + patientLastName;
+            String fullName = patientFirstName + " " + patientLastName;
             patientFullNames.add(fullName);
             for (int x = 0; x < patientFullNames.size(); x++) {
                 stringBuild.append("\t\t" + patientFullNames.get(x));

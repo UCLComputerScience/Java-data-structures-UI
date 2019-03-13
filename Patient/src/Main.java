@@ -4,12 +4,14 @@ public class Main {
     public static void main(String[] args)
     {
         try {
-            Model model = new Model();
-            model.readFile();
+            GUI gui = new GUI();
+            gui.panelContainer();
+            /*Model model = new Model();
+            model.readFile("C:/Users/Lian/Desktop/cw2Data/patients100.csv");*/
 
-            /*String testStrPatientID = model.getAllIDs();
-            System.out.println(testStrPatientID);
-            String testStrPatientName = model.getAllNames();
+            /*String testStrPatientID = model.getAllIDs();*/
+            /*System.out.println(model.getAllIDs());*/
+            /*String testStrPatientName = model.getAllNames();
             System.out.println(testStrPatientName);*/
 
 
@@ -34,5 +36,7 @@ public class Main {
         {
             System.out.println("Exception thrown");
         }
+
+
     }
 }
