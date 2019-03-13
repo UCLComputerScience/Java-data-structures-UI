@@ -70,7 +70,7 @@ public class GUI {
         menuBar.add(menu);
     }
 
-    public void makeScroll()
+    public void makeScrollForTextArea()
     {
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -100,7 +100,7 @@ public class GUI {
                     model.readFile(pathFile);
                     String output = model.getAllPatient();
                     textArea.setText(output);
-                    makeScroll();
+                    makeScrollForTextArea();
                     frame.setVisible(true);
                 }
                 catch (FileNotFoundException exception){
@@ -113,16 +113,32 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 try {
                     JPanel idPanel = new JPanel();
+                    idPanel.setLayout(new BoxLayout(idPanel, BoxLayout.Y_AXIS));
                     List<String> str = model.getAllIDs();
                     JButton[] buttons = new JButton[str.size()];
                     for(int i = 0; i < str.size(); i ++)
                     {
                         buttons[i] = new JButton(str.get(i));
+                        int index = i;
+                        buttons[i].addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                try {
+                                    String patientInfoPrint = model.getSinglePatient(index);
+                                    textArea.setText(patientInfoPrint);
+                                    makeScrollForTextArea();
+                                    frame.setVisible(true);
+                                }
+                                catch (Exception exception)
+                                {
+                                    JOptionPane.showMessageDialog(getAllInfo,"No Information Available!");
+                                }
+                            }
+                        });
                         idPanel.add(buttons[i]);
                     }
                     JScrollPane scroll = new JScrollPane(idPanel);
-                    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-                    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
                     frame.add(scroll);
                     frame.setVisible(true);
                 }

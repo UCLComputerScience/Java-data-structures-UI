@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41f65b3e-a41e-4143-8c82-96f758f3f4ad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../test/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../test/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../test/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../test/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../test/src/test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../test/test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Git/algorithms/algocw2q1.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Git/algorithms/algocw2q1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/notes" beforeDir="false" afterPath="$PROJECT_DIR$/src/notes" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -52,15 +43,15 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="17329" />
+          <entry key="java" value="17629" />
           <entry key="notes" value="156" />
-          <entry key="txt" value="509" />
+          <entry key="txt" value="579" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="17329" />
-          <entry key="PLAIN_TEXT" value="665" />
+          <entry key="JAVA" value="17629" />
+          <entry key="PLAIN_TEXT" value="735" />
         </counts>
       </usages-collector>
     </session>
@@ -82,13 +73,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="124" column="38" selection-start-line="124" selection-start-column="38" selection-end-line="124" selection-end-column="38" />
+            <state relative-caret-position="242">
+              <caret line="129" column="59" lean-forward="true" selection-start-line="129" selection-start-column="59" selection-end-line="129" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#panelContainer#0;class#GUI#0" />
                 <element signature="method#fileLoadandSave#0;class#GUI#0" />
                 <element signature="class#2059:2197" />
+                <element signature="method#makeScrollForTextArea#0;class#GUI#0" />
                 <element signature="method#searchBar#0;class#GUI#0" />
               </folding>
             </state>
@@ -255,7 +247,7 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/Lian/Desktop/Patient/src/Model.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552461540177" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552463013130" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -305,7 +297,7 @@
       <workItem from="1552339214638" duration="10340000" />
       <workItem from="1552349971911" duration="3000" />
       <workItem from="1552357088556" duration="6555000" />
-      <workItem from="1552403402387" duration="31404000" />
+      <workItem from="1552403402387" duration="32822000" />
     </task>
     <task id="LOCAL-00001" summary="Java CW2 push #2">
       <created>1552097130973</created>
@@ -447,11 +439,18 @@
       <option name="project" value="LOCAL" />
       <updated>1552454565949</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Java CW2 PushBranch#14&#10;&#10;GUI class&#10;-made improvements to code hygiene &#10;-old code can be found in notes">
+      <created>1552461582795</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1552461582795</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90267000" />
+    <option name="totallyTimeSpent" value="91685000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -548,7 +547,8 @@
     <MESSAGE value="Java CW2 PushBranch#11&#10;&#10;Implementing Model Class&#10;  -readFile may have an error in string input" />
     <MESSAGE value="Java CW2 Push#12&#10;&#10;implemented model class&#10;error was due to size of list being declared in the loop, it is now shifted out&#10;stringbuilderclass was declared as a instance variable, hence, this affected problems when it printed. it is now shifted into the methods as a local variable" />
     <MESSAGE value="Java CW2 PushBranch#13&#10;&#10;GUI class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Java CW2 PushBranch#13&#10;&#10;GUI class" />
+    <MESSAGE value="Java CW2 PushBranch#14&#10;&#10;GUI class&#10;-made improvements to code hygiene &#10;-old code can be found in notes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Java CW2 PushBranch#14&#10;&#10;GUI class&#10;-made improvements to code hygiene &#10;-old code can be found in notes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -664,13 +664,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="124" column="38" selection-start-line="124" selection-start-column="38" selection-end-line="124" selection-end-column="38" />
+        <state relative-caret-position="242">
+          <caret line="129" column="59" lean-forward="true" selection-start-line="129" selection-start-column="59" selection-end-line="129" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#panelContainer#0;class#GUI#0" />
             <element signature="method#fileLoadandSave#0;class#GUI#0" />
             <element signature="class#2059:2197" />
+            <element signature="method#makeScrollForTextArea#0;class#GUI#0" />
             <element signature="method#searchBar#0;class#GUI#0" />
           </folding>
         </state>
