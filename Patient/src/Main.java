@@ -7,7 +7,10 @@ public class Main {
             GUI gui = new GUI();
             gui.panelContainer();
             /*Model model = new Model();
-            model.readFile("C:/Users/Lian/Desktop/cw2Data/patients100.csv");*/
+            model.readFile("C:/Users/Lian/Desktop/cw2Data/patients100.csv");
+            float test = model.getAgeDistribution();
+            System.out.println(test);*/
+
 
             /*String testStrPatientID = model.getAllIDs();*/
             /*System.out.println(model.getAllIDs());*/

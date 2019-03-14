@@ -10,12 +10,15 @@ import java.util.List;
 public class GUI {
     JTextArea textArea = new JTextArea();
     JFileChooser fileChooser = new JFileChooser();
+    JPanel idPanel = new JPanel();
     JFrame frame = new JFrame("Patient Viewer");
-    String pathFile = "empty";
+    String pathFile = null;
     JButton go = new JButton("Go");
     JTextField searchTextField = new JTextField(20);
     JMenuBar menuBar = new JMenuBar();
     Model model = new Model();
+    JButton[] buttons;
+    String searchInput;
 
 
     public void panelContainer()
@@ -26,6 +29,7 @@ public class GUI {
         fileLoadAndSave();
         searchBar();
         getInformationMenu();
+        MathematicsBar();
         frame.setVisible(true);
     }
 
@@ -38,13 +42,24 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                    int result = fileChooser.showOpenDialog(loadItem);
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        File selectedFile = fileChooser.getSelectedFile();
-                        pathFile = selectedFile.getAbsolutePath();
-                        model.readFile(pathFile);
-                        JOptionPane.showMessageDialog(frame,"File Selected: " + pathFile);
+                    if (pathFile != null){
+                        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                        int result = fileChooser.showOpenDialog(loadItem);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+                            pathFile = selectedFile.getAbsolutePath();
+                            model.readFile(pathFile);
+                            JOptionPane.showMessageDialog(frame, "File Changed To: " + pathFile);
+                        }
+                    }
+                    else {
+                        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                        int results = fileChooser.showOpenDialog(loadItem);
+                        if(results == JFileChooser.APPROVE_OPTION){
+                            pathFile = fileChooser.getSelectedFile().getAbsolutePath();
+                            model.readFile(pathFile);
+                            JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                        }
                     }
                 }
                 catch(FileNotFoundException exception){
@@ -84,6 +99,16 @@ public class GUI {
         searchBar.add(searchLabel);
         searchBar.add(searchTextField);
         searchBar.add(go);
+        go.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                   searchInput = searchTextField.getText();
+                   JOptionPane.showMessageDialog(frame, "You Searched for: " + searchInput);
+                }
+                catch (Exception exception){}
+            }
+        });
         frame.add(searchBar,BorderLayout.SOUTH);
     }
 
@@ -92,15 +117,16 @@ public class GUI {
         JMenu menu = new JMenu("Get Information");
         JMenuItem getAllInfo = new JMenuItem("All Information");
         JMenuItem getPatientIdList = new JMenuItem("Patients' IDs");
+
         getAllInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-
                     model.readFile(pathFile);
                     String output = model.getAllPatient();
                     textArea.setText(output);
                     makeScrollForTextArea();
+                    idPanel.setVisible(false);
                     frame.setVisible(true);
                 }
                 catch (FileNotFoundException exception){
@@ -108,14 +134,14 @@ public class GUI {
                 }
             }
         });
+
         getPatientIdList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    JPanel idPanel = new JPanel();
                     idPanel.setLayout(new BoxLayout(idPanel, BoxLayout.Y_AXIS));
                     List<String> str = model.getAllIDs();
-                    JButton[] buttons = new JButton[str.size()];
+                    buttons = new JButton[str.size()];
                     for(int i = 0; i < str.size(); i ++)
                     {
                         buttons[i] = new JButton(str.get(i));
@@ -126,7 +152,7 @@ public class GUI {
                                 try {
                                     String patientInfoPrint = model.getSinglePatient(index);
                                     textArea.setText(patientInfoPrint);
-                                    makeScrollForTextArea();
+                                    frame.add(textArea);
                                     frame.setVisible(true);
                                 }
                                 catch (Exception exception)
@@ -140,6 +166,7 @@ public class GUI {
                     JScrollPane scroll = new JScrollPane(idPanel);
                     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
                     frame.add(scroll);
+                    scroll.setVisible(true);
                     frame.setVisible(true);
                 }
                 catch (Exception exception)
@@ -148,10 +175,65 @@ public class GUI {
                 }
             }
         });
+
         menu.add(getPatientIdList);
         menu.add(getAllInfo);
         menuBar.add(menu);
     }
 
+    public void searchFilter(String searchInput)
+    {
+
+    }
+
+    public void MathematicsBar()
+    {
+        JMenu Mathematics = new JMenu("Statistics");
+        JMenuItem Age = new JMenuItem("Avg. Age");
+        JMenuItem BirthYear = new JMenuItem("Avg. Birth Year");
+        JMenuItem AgeDistribution = new JMenuItem("Age Distribution");
+        Age.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int avgAge = model.getAverageAge();
+                    JOptionPane.showMessageDialog(frame, "The Average Age is: " + avgAge);
+                }
+                catch (Exception exception){
+                    JOptionPane.showMessageDialog(frame, "No Entries");
+                }
+            }
+        });
+        BirthYear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int birthYear = model.getAverageBirthYear();
+                    JOptionPane.showMessageDialog(frame, "The Birth Year is: " + birthYear);
+                }
+                catch (Exception exception)
+                {
+                    JOptionPane.showMessageDialog(frame, "No entries");
+                }
+            }
+        });
+        AgeDistribution.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    float ageDistribution = model.getAgeDistribution();
+                    JOptionPane.showMessageDialog(frame, "The Age Distribution is: " + ageDistribution);
+                }
+                catch (Exception exception)
+                {
+                    JOptionPane.showMessageDialog(frame, "No Entries" );
+                }
+            }
+        });
+        Mathematics.add(Age);
+        Mathematics.add(BirthYear);
+        Mathematics.add(AgeDistribution);
+        menuBar.add(Mathematics);
+    }
 
 }

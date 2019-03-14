@@ -5,7 +5,6 @@ from pylab import imshow, show, get_cmap
 file1 = "view1.png"
 leftImg = Image.open(file1).convert('L')
 leftWidth, leftHeight = leftImg.size
-print(leftImg.size)
 
 file2 = "view2.png"
 rightImg = Image.open(file2).convert('L')

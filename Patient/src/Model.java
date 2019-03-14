@@ -1,7 +1,7 @@
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Model {
     ReadCSV files = new ReadCSV();
@@ -59,4 +59,49 @@ public class Model {
         return ouput;
     }
 
+    public int getAverageBirthYear() throws ParseException
+    {
+        int avgYearTmp = 0;
+        for(int i = 0; i < str.size(); i++ )
+        {
+            Object patientReference = str.get(i);
+            String patientAgeString = ((Patient) patientReference).getBirthDate();
+            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(patientAgeString);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(birthDate);
+            avgYearTmp += cal.get(Calendar.YEAR);
+        }
+        int avgYear = avgYearTmp / str.size();
+        return avgYear;
+    }
+
+    public int getAverageAge() throws ParseException
+    {
+        int averageYear = getAverageBirthYear();
+        int curYear = Calendar.getInstance().get(Calendar.YEAR);
+        int avgAge = curYear - averageYear;
+        return avgAge;
+    }
+
+    public float getAgeDistribution() throws ParseException
+    {
+        int numberChildren = 0;
+        int numberParent = 0;
+        int curYear = Calendar.getInstance().get(Calendar.YEAR);
+        for(int i = 0; i < str.size(); i++ ) {
+            Object patientReference = str.get(i);
+            String patientAgeString = ((Patient) patientReference).getBirthDate();
+            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(patientAgeString);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(birthDate);
+            int patientBirthYear = cal.get(Calendar.YEAR);
+            int patientAge = curYear - patientBirthYear;
+            if ( 0 < patientAge && patientAge < 9 )
+            {
+                ++numberChildren;
+            }++numberParent;
+        }
+        float ageDistribution = ((float) numberChildren / (float) numberParent);
+        return ageDistribution * 1000;
+    }
 }

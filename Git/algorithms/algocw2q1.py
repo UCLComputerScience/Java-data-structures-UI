@@ -1,15 +1,15 @@
 import numpy as np
 import time
+from scipy.interpolate import spline
 import matplotlib.pyplot as plt
 heapCompare = 0
 heapSwaps = 0
-inputSize = [200000,500000,1000000,5000000,10000000]
+inputSize = [200000,300000,500000,700000,1000000,3000000,5000000,10000000]
+sizeLabels = ["200k","300k","500k","700k","1m","3m","5m","10m"]
 heapTimeList = []
 quickTimeList = []
-heapCompareList = []
-quickCompareList = []
-heapSwapList = []
-quickSwapList = []
+heapCompareAndSwapsList = []
+quickCompareAndSwapsList = []
 
 
 def quicksort(list,low,high):
@@ -91,28 +91,39 @@ def heapSort(arr):
         heapify(arr, i, 0)
     return heapCompare, heapSwaps
   
+for i in range (9):
+  for i in range (8):
+      arr = np.random.randint(0,inputSize[i],inputSize[i])
+      n = len(arr) 
+      quickStart = time.time()
+      quickComparisons, quickSwaps = quicksort(arr,0,n-1) 
+      quickEnd = time.time()
+      heapStart = time.time()
+      heapCompare, heapSwaps = heapSort(arr)
+      heapEnd = time.time()
+      quickTime = quickEnd - quickStart
+      quickTimeList.append(quickTime)
+      heapTime = heapEnd - heapStart
+      heapTimeList.append(heapTime)
+      heapTotalCompareAndSwaps = heapCompare + heapSwaps
+      quickTotalCompareAndSwaps = quickComparisons + quickSwaps
+      heapCompareAndSwapsList.append(heapTotalCompareAndSwaps)
+      quickCompareAndSwapsList.append(quickTotalCompareAndSwaps)
+  plt.title("Time taken in seconds")
+  plt.plot(sizeLabels,quickTimeList, label = " Qucik Sort")
+  plt.plot(sizeLabels,heapTimeList, label = "Heap Sort")
+  plt.ylabel('Time Taken')
+  plt.xlabel('Input Size')
+  plt.legend()
+  plt.grid()
+  plt.show()
 
-for i in range (5):
-    arr = np.random.randint(0,inputSize[i],inputSize[i])
-    n = len(arr) 
-    quickStart = time.time()
-    quickComparisons, quickSwaps = quicksort(arr,0,n-1) 
-    quickEnd = time.time()
-    heapStart = time.time()
-    heapCompare, heapSwaps = heapSort(arr)
-    heapEnd = time.time()
-    quickTime = quickEnd - quickStart
-    quickTimeList.append(quickTime)
-    heapTime = heapEnd - heapStart
-    heapTimeList.append(heapTime)
-    heapCompareList.append(heapCompare)
-    quickCompareList.append(quickComparisons)
-    heapSwapList.append(heapSwaps)
-    quickSwapList.append(quickSwaps)
-plt.plot(inputSize,quickTimeList, label = " Qucik Sort")
-plt.plot(inputSize,heapTimeList, label = "Heap Sort")
-plt.ylabel('Time Taken')
-plt.xlabel('Input Size')
-plt.legend()
-plt.show()
-plt.savefig('plot1.png')
+  plt.title("Total Comparisons and Swaps")
+  plt.plot(sizeLabels,heapCompareAndSwapsList,label = "Heap Sort")
+  plt.plot(sizeLabels,quickCompareAndSwapsList,label = "Quick Sort")
+  plt.ylabel("Average Comparisons and Swaps")
+  plt.xlabel("Input Size")
+  plt.legend()
+  plt.grid()
+  plt.show()
+
