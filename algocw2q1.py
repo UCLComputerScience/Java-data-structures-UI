@@ -1,134 +1,67 @@
+from PIL import Image
 import numpy as np
-import time
-import matplotlib.pyplot as plt
-import pandas as pd 
-import xlsxwriter
-heapCompare = 0
-heapSwaps = 0
-inputSize = [200000,300000,500000,1000000,5000000,10000000]
-heapTimeList = []
-quickTimeList = []
-heapCompareAndSwapsList = []
-quickCompareAndSwapsList = []
+from pylab import imshow, show, get_cmap
+import os
+
+os.chdir('C:/Users/Lian/Desktop/Stereo/Pair1')
+file1 = 'view1.png'
+leftImg = Image.open(file1).convert('L')
+leftWidth, leftHeight = leftImg.size
+
+file2 = 'view2.png'
+rightImg = Image.open(file2).convert('L')
+rightWidth, rightHeight = rightImg.size
+
+Z1 = np.random.random((512,512))
+imshow(Z1, cmap=get_cmap("gray"), interpolation='nearest')
+show()
+Z2 = np.random.random((256,256))
+imshow(Z2, cmap=get_cmap("gray"), interpolation='nearest')
+show()
+
+occlusion = 2.665
+disparity_map = [[0]*(leftWidth) for i in range(leftHeight)]
+disparity_array = np.asarray(disparity_map)
+C = [[0]*(rightWidth+1) for i in range(leftWidth+1)]
+
+def cFunction(z1,z2):
+    z = (0.5 * z1) + (0.5 * z2)
+    mult1 =  0.5 * (z - z1) * (1/16) * (z -z1)
+    mult2 = 0.5 * (z - z2) * (1/16) * (z -z2)
+    cFuncOut = mult1 + mult2
+    return cFuncOut
 
 
-def quicksort(list,low,high):
-  i = low
-  j = high
-  swapCount = 0
-  compareCount = 0
-  pivot = list[high]
+def forwardpass(x):
+    for i in range(1,leftWidth+1):
+        C[i][0] = i * occlusion
+    for i in range(1,rightWidth+1):
+        C[0][i] = i * occlusion
+    for i in range(1, leftWidth+1):
+        for j in range (1, rightWidth+1):
+            #print(i,j)
+            C[i][j] = min(C[i - 1][ j - 1]+ cFunction(leftImg.getpixel((i-1,x)), rightImg.getpixel((j-1,x))), C[i][j-1] + occlusion, C[i-1][j] + occlusion)
 
-  while i <= j:
-    while list[i] < pivot:
-      i += 1
-    while pivot < list[j]:
-      j -= 1
-    if i <= j:
-      aux = list[i]
-      list[i] = list[j]
-      list[j] = aux
-      swapCount += 1
-      i += 1
-      j -= 1
-    compareCount += 1
+def backwardpass(i):
+    cur_i = leftWidth
+    cur_j = rightWidth
+    while cur_i != 0 and cur_j != 0:
+        #print(cur_i, cur_j)
+        if(C[cur_i][cur_j] == C[cur_i-1][cur_j-1]+cFunction(leftImg.getpixel((cur_i-1,i)), rightImg.getpixel((cur_j-1,i)))):
+            disparity_map[i][cur_i-1] = abs(cur_i-cur_j)
+            cur_i -=1
+            cur_j -=1
+        elif(C[cur_i][cur_j] == C[cur_i-1][cur_j] + occlusion):
+            disparity_map[i][cur_i-1] = -1
+            cur_i -= 1
+        elif(C[cur_i][cur_j] == C[cur_i][cur_j-1] + occlusion):
+            cur_j -= 1
 
-  if low < j:
-    iniSwap, iniCompare = quicksort(list, low, j)
-    swapCount += iniSwap
-    compareCount += iniCompare
-  if i < high:
-    iniSwap, iniCompare = quicksort(list, i, high)
-    swapCount += iniSwap
-    compareCount += iniCompare    
-
-  return (swapCount, compareCount)
-
-
-
-def heapify(arr, n, i): 
-    global heapSwaps
-    global heapCompare
-    largest = i # Initialize largest as root 
-    l = 2 * i + 1     # left = 2*i + 1 
-    r = 2 * i + 2     # right = 2*i + 2 
-  
-    # See if left child of root exists and is 
-    # greater than root 
-    if l < n and arr[i] < arr[l]: 
-        largest = l 
-        heapCompare += 1
-  
-    # See if right child of root exists and is 
-    # greater than root 
-    if r < n and arr[largest] < arr[r]: 
-        largest = r 
-        heapCompare += 1
-  
-    # Change root, if needed 
-    if largest != i: 
-        arr[i],arr[largest] = arr[largest],arr[i] # swap 
-        heapSwaps += 1
-        # Heapify the root. 
-        heapify(arr, n, largest) 
-    # print(heapCompare, heapSwap)
-    return heapCompare, heapSwaps
-  
-# The main function to sort an array of given size 
-def heapSort(arr): 
-    n = len(arr) 
-    global heapCompare
-    global heapSwaps
-    # Build a maxheap. 
-    for i in range(n, -1, -1): 
-        heapify(arr, n, i) 
-  
-    # One by one extract elements 
-    for i in range(n-1, 0, -1): 
-        heapSwaps += 1
-        arr[i], arr[0] = arr[0], arr[i] # swap 
-        heapCompare+=1
-        heapify(arr, i, 0)
-    return heapCompare, heapSwaps
-
-for i in range (6):
-  arr = np.random.randint(0,inputSize[i],inputSize[i])
-  n = len(arr) 
-  quickStart = time.time()
-  quickComparisons, quickSwaps = quicksort(arr,0,n-1) 
-  quickEnd = time.time()
-  heapStart = time.time()
-  heapCompare, heapSwaps = heapSort(arr)
-  heapEnd = time.time()
-  quickTime = quickEnd - quickStart
-  quickTimeList.append(quickTime)
-  heapTime = heapEnd - heapStart
-  heapTimeList.append(heapTime)
-  heapTotalCompareAndSwaps = heapCompare + heapSwaps
-  quickTotalCompareAndSwaps = quickComparisons + quickSwaps
-  heapCompareAndSwapsList.append(heapTotalCompareAndSwaps)
-  quickCompareAndSwapsList.append(quickTotalCompareAndSwaps)
-# plt.title("Time taken in seconds")
-# plt.plot(sizeLabels,quickTimeList, label = " Qucik Sort")
-# plt.plot(sizeLabels,heapTimeList, label = "Heap Sort")
-# plt.ylabel('Time Taken')
-# plt.xlabel('Input Size')
-# plt.legend()
-# plt.grid()
-# plt.show()
-
-# plt.title("Total Comparisons and Swaps")
-# plt.plot(sizeLabels,heapCompareAndSwapsList,label = "Heap Sort")
-# plt.plot(sizeLabels,quickCompareAndSwapsList,label = "Quick Sort")
-# plt.ylabel("Average Comparisons and Swaps")
-# plt.xlabel("Input Size")
-# plt.legend()
-# plt.grid()
-# plt.show()
-df = pd.DataFrame({ 'Quick total time': quickTimeList,
-                  'Heap total time': heapTimeList,
-                  'Quick C&S': quickCompareAndSwapsList,
-                  'Heap C&S': heapCompareAndSwapsList })
-writer = pd.ExcelWriter('pandas_simple4.xlsx', engine='xlsxwriter')
-df.to_excel(writer, sheet_name='run1')
-writer.save()
+for i in range(leftHeight):
+    print(i)
+    C = [[0]*(rightWidth+1) for i in range(leftWidth+1)]
+    forwardpass(i)
+    backwardpass(i)
+disparity_array = np.asarray(disparity_map)
+imgOut = Image.fromarray(disparity_array)
+imgOut.show()
