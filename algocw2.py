@@ -1,13 +1,14 @@
 from PIL import Image
 import numpy as np
 from pylab import imshow, show, get_cmap
+import os
 
-file1 = "view1.png"
+os.chdir('C:/Users/Lian/Desktop/Stereo/Pair1')
+file1 = 'view1.png'
 leftImg = Image.open(file1).convert('L')
 leftWidth, leftHeight = leftImg.size
-print(leftImg.size)
 
-file2 = "view2.png"
+file2 = 'view2.png'
 rightImg = Image.open(file2).convert('L')
 rightWidth, rightHeight = rightImg.size
 
@@ -18,7 +19,7 @@ Z2 = np.random.random((256,256))
 imshow(Z2, cmap=get_cmap("gray"), interpolation='nearest')
 show()
 
-occlusion = 2.6
+occlusion = 2.665
 disparity_map = [[0]*(leftWidth) for i in range(leftHeight)]
 disparity_array = np.asarray(disparity_map)
 C = [[0]*(rightWidth+1) for i in range(leftWidth+1)]
