@@ -1,32 +1,53 @@
 from PIL import Image
 import numpy as np
 from pylab import imshow, show, get_cmap
+import os
 
-file1 = "view1.png"
+#Random Dot Stereogram (ATTEMPT)
+Z1 = np.random.random_integers(256,size=(512,512))
+Z2 = np.random.random_integers(256,size=(256,256))
+
+def createLeftImg(array1, array2):
+    for i in range(256):
+        for x in range(124,381):
+            for y in range(128,385):
+                array1[x,y] = array2[i,i]
+    return array1
+
+def createRightImg(array1, array2):
+    for i in range(256):
+        for x in range(132,389):
+            for y in range(128,385):
+                array1[x,y] = array2[i,i]
+    return array1
+
+leftImgStereo = createLeftImg(Z1,Z2)
+rightImgStereo = createRightImg(Z1,Z2)
+leftImgRandom = imshow(leftImgStereo, cmap=get_cmap("gray"), interpolation='nearest')
+rightImgRandom = imshow(rightImgStereo, cmap=get_cmap("gray"), interpolation='nearest')
+
+#Imports the pictures and converts them into grayscale
+os.chdir('C:/Users/Lian/Desktop/Stereo/Pair1')
+file1 = 'view1.png'
 leftImg = Image.open(file1).convert('L')
 leftWidth, leftHeight = leftImg.size
 
-file2 = "view2.png"
+file2 = 'view2.png'
 rightImg = Image.open(file2).convert('L')
 rightWidth, rightHeight = rightImg.size
 
-Z1 = np.random.random((512,512))
-imshow(Z1, cmap=get_cmap("gray"), interpolation='nearest')
-show()
-Z2 = np.random.random((256,256))
-imshow(Z2, cmap=get_cmap("gray"), interpolation='nearest')
-show()
 
-occlusion = 2.6
-disparity_map = [[0]*(leftWidth) for i in range(leftHeight)]
+occlusion = 0.5
+disparity_map = [[0]*10*(leftWidth) for i in range(leftHeight)]
 disparity_array = np.asarray(disparity_map)
 C = [[0]*(rightWidth+1) for i in range(leftWidth+1)]
 
+#represents the small c function in the forward pass on the paper provided
 def cFunction(z1,z2):
     z = (0.5 * z1) + (0.5 * z2)
     mult1 =  0.5 * (z - z1) * (1/16) * (z -z1)
     mult2 = 0.5 * (z - z2) * (1/16) * (z -z2)
-    cFuncOut = mult1 + mult2
+    cFuncOut = mult1 + mult2 + occlusion
     return cFuncOut
 
 
@@ -63,3 +84,4 @@ for i in range(leftHeight):
 disparity_array = np.asarray(disparity_map)
 imgOut = Image.fromarray(disparity_array)
 imgOut.show()
+imgOut.save('Pair1.png')

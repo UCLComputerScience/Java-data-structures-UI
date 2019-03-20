@@ -220,3 +220,18 @@ public class GUI {
 
 
 }
+
+
+StringBuilder stringBuild = new StringBuilder();
+        stringBuild.append("{\n");
+        stringBuild.append("\t" + "\"" + "patients Full Names" + "\"" + ": [\n");
+        for (int i = 0; i < str.size(); i++) {
+            Object patientReference = str.get(i);
+            String patientFirstName = ((Patient) patientReference).getFirst();
+            String patientLastName = ((Patient) patientReference).getLast();
+            String fullName = patientFirstName + " " + patientLastName;
+            patientFullNames.add(fullName);
+            for (int x = 0; x < patientFullNames.size(); x++) {
+                stringBuild.append("\t\t" + patientFullNames.get(x));
+                stringBuild.append("\n");
+            }

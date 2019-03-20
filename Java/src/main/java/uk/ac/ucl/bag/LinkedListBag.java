@@ -40,53 +40,87 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     @Override
-    public void add(T value) throws BagException {
-        if(size()<MAX_SIZE) {
-            if (!contains(value)) {
-                if (head == null) {
-                    head = new Node<T>(value, 1, null);
-                } else {
-                    Node<T> tmpHead = head;
-                    while (tmpHead.next != null) {
-                        tmpHead = tmpHead.next;
-                    }
-                    tmpHead.next = new Node<T>(value, 1, null);
+    public void add(T value) throws BagException{
+    if(size()<MAX_SIZE) {
+        if (!contains(value)) {
+            if (head == null)
+            {
+                head  = new Node<>(value,1,null);
+            }
+
+            else
+            {
+                Node<T> tmpNode = head;
+                while (tmpNode.next != null)
+                {
+                    tmpNode = head.next;
                 }
-            }addWithValue(value);
+                tmpNode.next = new Node<>(value,1,null);
+            }
         }
+        else {
+            updateNode(value);
+        }
+    }
         else if (size()==MAX_SIZE && contains(value)) {
-            addWithValue(value);
-        }throw new BagException("Bag is Full");
+        updateNode(value);
+    }
+        else {
+        throw new BagException("Bag is full");
+    }
+}
+
+    public void updateNode(T value){
+        Node<T> tmpNode = head;
+        while(tmpNode.next != null && !tmpNode.value.equals(value)){
+            tmpNode = tmpNode.next;
+        }
+        Node<T> nextNode = tmpNode.next;
+        tmpNode = new Node<>(value,++tmpNode.occurrences,nextNode);
     }
 
-    public void addWithValue(T value){
+    public void updateNodeWithOcc(T value, int x){
         Node<T> tmpNode = head;
-        while(tmpNode != null && !tmpNode.value.equals(value)){
+        while(tmpNode.next != null && !tmpNode.value.equals(value)){
             tmpNode = tmpNode.next;
-        }++tmpNode.occurrences;
+        }
+        Node<T> nextNode = tmpNode.next;
+        tmpNode = new Node<>(value,x + tmpNode.occurrences,nextNode);
     }
 
     @Override
     public void addWithOccurrences(T value, int occurrences) throws BagException {
-        Node<T> tmpNode = head;
+
         if (size()<MAX_SIZE){
-            if (!contains(value)){
-                tmpNode = new Node<T>(value,occurrences,null);
-            }while(tmpNode != null && !tmpNode.value.equals(value)){
-                tmpNode=tmpNode.next;
-            }int x = tmpNode.occurrences;
-            tmpNode.occurrences = x + occurrences;
-        }throw new BagException("Bag is Full");
+            if (!contains(value)) {
+                if (head == null) {
+                    head = new Node<>(value, occurrences, null);
+                }
+                else {
+                    Node<T> tmpNode = head;
+                    while (tmpNode.next != null) {
+                        tmpNode = head.next;
+                    }
+                    tmpNode.next = new Node<>(value, occurrences, null);
+                }
+            }
+            else {
+                updateNodeWithOcc(value,occurrences);
+            }
+        }
+        else {
+            throw new BagException("Bag is Full");
+        }
     }
 
     @Override
     public boolean contains(T value) {
         Node<T> tmpNode = head;
         while(tmpNode!=null){
-            tmpNode = tmpNode.next;
-            if(tmpNode.value.equals(value)){
+            if (tmpNode.value.equals(value)){
                 return true;
             }
+            tmpNode = tmpNode.next;
         }return false;
     }
 
@@ -124,7 +158,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         int x =0;
         Node<T> tmpNode = head;
         while (tmpNode!=null){
-            tmpNode = tmpNode.next;;
+            tmpNode = tmpNode.next;
             ++x;
         }return x;
     }
@@ -135,12 +169,12 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     }
 
 
-    private class MapBagUniqueIterator implements Iterator<T> {
-        Node<T> tmpNode = head;
-        private int index = 0;
+    private class LinkedListUniqueIterator implements Iterator<T> {
+        Node<T> tmpNode;
+        public LinkedListUniqueIterator(){ tmpNode = head; }
 
         public boolean hasNext() {
-            return (tmpNode.next != null);
+            return (tmpNode != null);
         }
 
         public T next() {
@@ -153,17 +187,14 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
     }
 
-    private class MapBagIterator implements Iterator<T> {
-        private int index = 0;
+    private class LinkedListIterator implements Iterator<T> {
         private int count = 0;
         Node<T> tmpNode = head;
         int cOccurrences;
 
         public boolean hasNext() {
             int x = tmpNode.occurrences;
-            if (x > 0 && tmpNode.next == null) {
-                return true;
-            } else if (tmpNode.next != null) {
+            if (tmpNode.next != null && x > 0){
                 return true;
             }
             return false;
@@ -171,27 +202,37 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
         public T next() {
             cOccurrences = tmpNode.occurrences;
-            T cValue = tmpNode.value;
-            if(hasNext()) {
-                if (cOccurrences > count) {
-                    count++;
-                    return cValue;
-                } else {
-                    count = 1;
-                    tmpNode = tmpNode.next;
-                    return cValue;
-                }
-            }throw new NoSuchElementException("No More Element left in List");
+            if (cOccurrences > count) {
+                count++;
+                T cValue = tmpNode.value;
+                return cValue;
+            }
+            else {
+                count = 1;
+                tmpNode = tmpNode.next;
+                T cValue = tmpNode.value;
+                return cValue;
+            }
         }
     }
 
     @Override
     public Iterator<T> allOccurrencesIterator() {
-        return new MapBagIterator();
+        return new LinkedListIterator();
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new MapBagUniqueIterator();
+        return new LinkedListUniqueIterator();
+    }
+
+    @Override
+    public String toString(){
+        String cString = "[ ";
+        Node<T> tmpNode = head;
+        while(tmpNode != null){
+            cString += tmpNode.value + " : " + tmpNode.occurrences + " , ";
+        }
+        return cString + " ]";
     }
 }

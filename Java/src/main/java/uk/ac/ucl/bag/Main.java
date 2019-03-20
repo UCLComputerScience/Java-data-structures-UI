@@ -60,8 +60,6 @@ public class Main
       bag2.add("def");
       bag2.add("def");
       bag2.add("klm");
-      bag2.addWithOccurrences("xyz",3);
-      bag2.addWithOccurrences("123",3);
       System.out.print("bag2 all unique:             ");
       print(bag2);
       System.out.print("bag2 all:                    ");
@@ -109,7 +107,7 @@ public class Main
     new Main().go("ArrayBag");
     System.out.println("------------MapBag---------------");
     new Main().go("MapBag");
-      System.out.println("------------LinkedListBag---------------");
-      new Main().go("LinkedListBag");
+    System.out.println("------------LinkedListBag---------------");
+    new Main().go("LinkedListBag");
   }
 }

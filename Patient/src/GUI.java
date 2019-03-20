@@ -10,7 +10,6 @@ import java.util.List;
 public class GUI {
     JTextArea textArea = new JTextArea();
     JFileChooser fileChooser = new JFileChooser();
-    JPanel idPanel = new JPanel();
     JFrame frame = new JFrame("Patient Viewer");
     String pathFile = null;
     JButton go = new JButton("Go");
@@ -115,32 +114,15 @@ public class GUI {
     public void getInformationMenu()
     {
         JMenu menu = new JMenu("Get Information");
-        JMenuItem getAllInfo = new JMenuItem("All Information");
         JMenuItem getPatientIdList = new JMenuItem("Patients' IDs");
-
-        getAllInfo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    model.readFile(pathFile);
-                    String output = model.getAllPatient();
-                    textArea.setText(output);
-                    makeScrollForTextArea();
-                    idPanel.setVisible(false);
-                    frame.setVisible(true);
-                }
-                catch (FileNotFoundException exception){
-                    JOptionPane.showMessageDialog(getAllInfo,"No Input File!");
-                }
-            }
-        });
 
         getPatientIdList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    JPanel idPanel = new JPanel();
                     idPanel.setLayout(new BoxLayout(idPanel, BoxLayout.Y_AXIS));
-                    List<String> str = model.getAllIDs();
+                    List<String> str = model.getAllNames();
                     buttons = new JButton[str.size()];
                     for(int i = 0; i < str.size(); i ++)
                     {
@@ -150,6 +132,7 @@ public class GUI {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 try {
+
                                     String patientInfoPrint = model.getSinglePatient(index);
                                     textArea.setText(patientInfoPrint);
                                     frame.add(textArea);
@@ -157,7 +140,7 @@ public class GUI {
                                 }
                                 catch (Exception exception)
                                 {
-                                    JOptionPane.showMessageDialog(getAllInfo,"No Information Available!");
+                                    JOptionPane.showMessageDialog(frame,"No Information Available!");
                                 }
                             }
                         });
@@ -177,13 +160,20 @@ public class GUI {
         });
 
         menu.add(getPatientIdList);
-        menu.add(getAllInfo);
         menuBar.add(menu);
     }
 
-    public void searchFilter(String searchInput)
+    public void searchFilter()
     {
-
+        String searchInput = searchTextField.getText();
+        for (JButton curButton : buttons)
+        {
+            String curButtonText = curButton.getText();
+            if(!curButtonText.startsWith(searchInput))
+            {
+                if(model)
+            }
+        }
     }
 
     public void MathematicsBar()
@@ -235,5 +225,6 @@ public class GUI {
         Mathematics.add(AgeDistribution);
         menuBar.add(Mathematics);
     }
+
 
 }

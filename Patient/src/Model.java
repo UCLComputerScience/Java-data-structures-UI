@@ -8,7 +8,6 @@ public class Model {
     Scanner sc = new Scanner(System.in);
     JSONFormatter json = new JSONFormatter();
     List<Patient> str;
-    List<String> patientFullNames = new ArrayList<>();
 
 
     public List readFile(String input) throws FileNotFoundException {
@@ -38,25 +37,17 @@ public class Model {
         return patientListID;
     }
 
-    public String getAllNames()
+    public List getAllNames()
     {
-        StringBuilder stringBuild = new StringBuilder();
-        stringBuild.append("{\n");
-        stringBuild.append("\t" + "\"" + "patients Full Names" + "\"" + ": [\n");
-        for (int i = 0; i < str.size(); i++) {
-            Object patientReference = str.get(i);
-            String patientFirstName = ((Patient) patientReference).getFirst();
-            String patientLastName = ((Patient) patientReference).getLast();
-            String fullName = patientFirstName + " " + patientLastName;
-            patientFullNames.add(fullName);
-            for (int x = 0; x < patientFullNames.size(); x++) {
-                stringBuild.append("\t\t" + patientFullNames.get(x));
-                stringBuild.append("\n");
-            }
-        }
-        stringBuild.append("\t]");
-        String ouput = stringBuild.toString();
-        return ouput;
+        List<String> patientFullNames = new ArrayList<>();
+        for (int i = 0; i < str.size(); i ++)
+        {
+            Object curPatient = str.get(i);
+            String curPatientFirstName = ((Patient) curPatient).getFirst();
+            String curPatientLastName = ((Patient) curPatient).getLast();
+            String curPatitentFullName = curPatientFirstName + "  " + curPatientLastName;
+            patientFullNames.add(curPatitentFullName);
+        }return patientFullNames;
     }
 
     public int getAverageBirthYear() throws ParseException

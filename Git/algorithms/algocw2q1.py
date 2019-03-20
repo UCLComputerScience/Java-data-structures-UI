@@ -1,11 +1,11 @@
 import numpy as np
 import time
-from scipy.interpolate import spline
 import matplotlib.pyplot as plt
+import pandas as pd 
+import xlsxwriter
 heapCompare = 0
 heapSwaps = 0
-inputSize = [200000,300000,500000,700000,1000000,3000000,5000000,10000000]
-sizeLabels = ["200k","300k","500k","700k","1m","3m","5m","10m"]
+inputSize = [200000,300000,500000,1000000,5000000,7000000,10000000]
 heapTimeList = []
 quickTimeList = []
 heapCompareAndSwapsList = []
@@ -79,7 +79,6 @@ def heapSort(arr):
     n = len(arr) 
     global heapCompare
     global heapSwaps
-    # Build a maxheap. 
     for i in range(n, -1, -1): 
         heapify(arr, n, i) 
   
@@ -90,40 +89,43 @@ def heapSort(arr):
         heapCompare+=1
         heapify(arr, i, 0)
     return heapCompare, heapSwaps
-  
-for i in range (9):
-  for i in range (8):
-      arr = np.random.randint(0,inputSize[i],inputSize[i])
-      n = len(arr) 
-      quickStart = time.time()
-      quickComparisons, quickSwaps = quicksort(arr,0,n-1) 
-      quickEnd = time.time()
-      heapStart = time.time()
-      heapCompare, heapSwaps = heapSort(arr)
-      heapEnd = time.time()
-      quickTime = quickEnd - quickStart
-      quickTimeList.append(quickTime)
-      heapTime = heapEnd - heapStart
-      heapTimeList.append(heapTime)
-      heapTotalCompareAndSwaps = heapCompare + heapSwaps
-      quickTotalCompareAndSwaps = quickComparisons + quickSwaps
-      heapCompareAndSwapsList.append(heapTotalCompareAndSwaps)
-      quickCompareAndSwapsList.append(quickTotalCompareAndSwaps)
-  plt.title("Time taken in seconds")
-  plt.plot(sizeLabels,quickTimeList, label = " Qucik Sort")
-  plt.plot(sizeLabels,heapTimeList, label = "Heap Sort")
-  plt.ylabel('Time Taken')
-  plt.xlabel('Input Size')
-  plt.legend()
-  plt.grid()
-  plt.show()
 
-  plt.title("Total Comparisons and Swaps")
-  plt.plot(sizeLabels,heapCompareAndSwapsList,label = "Heap Sort")
-  plt.plot(sizeLabels,quickCompareAndSwapsList,label = "Quick Sort")
-  plt.ylabel("Average Comparisons and Swaps")
-  plt.xlabel("Input Size")
-  plt.legend()
-  plt.grid()
-  plt.show()
+#function used to generate random array 
+def createArray():
+  arr = np.random.randint(0,inputSize[i],inputSize[i])
+  arrCopied = arr.copy()          #arrCopied is a copy of the random array generated, this mantains the order of the array
+  return arr,arrCopied
+
+for i in range (7):
+  arrSort1,arrSort2 = createArray()
+  n = len(arrSort1) 
+  quickStart = time.time()                      #time start
+  quickComparisons, quickSwaps = quicksort(arrSort1,0,n-1) 
+  quickEnd = time.time()                         #time stop
+  heapStart = time.time()
+  heapCompare, heapSwaps = heapSort(arrSort2)
+  heapEnd = time.time()
+  quickTime = quickEnd - quickStart
+  quickTimeList.append(quickTime)
+  heapTime = heapEnd - heapStart
+  heapTimeList.append(heapTime)
+  heapTotalCompareAndSwaps = heapCompare + heapSwaps
+  quickTotalCompareAndSwaps = quickComparisons + quickSwaps
+  #input added to list containing total of comparisons and swaps
+  heapCompareAndSwapsList.append(heapTotalCompareAndSwaps)              
+  quickCompareAndSwapsList.append(quickTotalCompareAndSwaps)
+
+
+#This stores the list into a data frame
+#the data frame is then exported as a xlsx file
+#which is essentially an excel file
+#the graphs are then plotted through excel
+df = pd.DataFrame({ 'Quick total time': quickTimeList,
+                  'Heap total time': heapTimeList,
+                  'Quick C&S': quickCompareAndSwapsList,
+                  'Heap C&S': heapCompareAndSwapsList })
+writer = pd.ExcelWriter('test1.xlsx', engine='xlsxwriter')
+df.to_excel(writer, sheet_name='run1')
+writer.save()
+
 
