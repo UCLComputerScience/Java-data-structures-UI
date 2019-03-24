@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +14,18 @@ public class Model {
         str = files.ReadCSV(input);
         return str;
     }
+
+    public List readJson(String input) throws FileNotFoundException{
+        sc.useDelimiter(",|}");
+        while(sc.hasNext()){
+            Patient patient = new Patient();
+            for (int i = 0; i< 20; i++){
+
+            }
+        }
+    }
+
+
 
     public String getAllPatient()
     {

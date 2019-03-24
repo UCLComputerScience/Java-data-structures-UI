@@ -235,3 +235,272 @@ StringBuilder stringBuild = new StringBuilder();
                 stringBuild.append("\t\t" + patientFullNames.get(x));
                 stringBuild.append("\n");
             }
+
+
+
+
+
+
+
+
+
+
+
+
+            List<String> patientId = model.getAllIDs();
+                            List<String> patientNames = model.getAllNames();
+                            Object[][] data = new Object[patientId.size()][2];
+                            for(int i = 0; i < patientId.size(); i++)   {
+                                data[i][0] = patientId.get(i);
+                                data[i][1] = patientNames.get(i);
+                            }
+
+
+
+
+
+
+
+
+
+
+                            infoList.addMouseListener(new MouseAdapter() {
+                                                    @Override
+                                                    public void mouseClicked(MouseEvent e) {
+                                                        JList list = (JList) e.getSource();
+                                                        if(e.getClickCount() == 2){
+                                                            int index = list.locationToIndex(e.getPoint());
+                                                            JOptionPane.showMessageDialog(frame,model.getSinglePatient(index));
+                                                        }
+                                                    }
+                                                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                import javax.swing.*;
+                                                import javax.swing.event.DocumentEvent;
+                                                import javax.swing.event.DocumentListener;
+                                                import java.awt.*;
+                                                import java.awt.event.ActionEvent;
+                                                import java.awt.event.ActionListener;
+                                                import java.io.File;
+                                                import java.io.FileNotFoundException;
+                                                import java.io.FileWriter;
+                                                import java.util.List;
+
+                                                public class GUI {
+                                                    private JList<String> infoList = createJList();
+                                                    JTextArea textArea = new JTextArea();
+                                                    JFileChooser fileChooser = new JFileChooser();
+                                                    JFrame frame = new JFrame("Patient Viewer");
+                                                    String pathFile = null;
+                                                    JMenuBar menuBar = new JMenuBar();
+                                                    Model model = new Model();
+                                                    List<String> tmpStr = model.getAllNames();
+
+
+
+                                                    public void panelContainer()
+                                                    {
+                                                        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+                                                        frame.setSize(500,500);
+                                                        frame.getContentPane().add(menuBar,BorderLayout.NORTH);
+                                                        fileLoadAndSave();
+                                                        getInformationMenu();
+                                                        MathematicsBar();
+                                                        frame.setVisible(true);
+                                                    }
+
+                                                    public void fileLoadAndSave()
+                                                    {
+                                                        JMenu menu = new JMenu("Files");
+                                                        JMenuItem loadItem = new JMenuItem("Load");
+                                                        JMenuItem saveItem = new JMenuItem("Save");
+                                                        loadItem.addActionListener(new ActionListener() {
+                                                            @Override
+                                                            public void actionPerformed(ActionEvent e) {
+                                                                try{
+                                                                    if (pathFile != null){
+                                                                        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                                                                        int result = fileChooser.showOpenDialog(loadItem);
+                                                                        if (result == JFileChooser.APPROVE_OPTION) {
+                                                                            File selectedFile = fileChooser.getSelectedFile();
+                                                                            pathFile = selectedFile.getAbsolutePath();
+                                                                            model.readFile(pathFile);
+                                                                            JOptionPane.showMessageDialog(frame, "File Changed To: " + pathFile);
+                                                                        }
+                                                                    }
+                                                                    else {
+                                                                        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                                                                        int results = fileChooser.showOpenDialog(loadItem);
+                                                                        if(results == JFileChooser.APPROVE_OPTION){
+                                                                            pathFile = fileChooser.getSelectedFile().getAbsolutePath();
+                                                                            model.readFile(pathFile);
+                                                                            JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                                                                        }
+                                                                    }
+                                                                }
+                                                                catch(FileNotFoundException exception){
+                                                                    JOptionPane.showMessageDialog(loadItem,"File not Found!");
+                                                                }
+                                                            }
+                                                        });
+                                                        saveItem.addActionListener(new ActionListener() {
+                                                            @Override
+                                                            public void actionPerformed(ActionEvent e) {
+                                                                try{
+                                                                    String saveTextArea = textArea.getText();
+                                                                    FileWriter fWriter = new FileWriter(fileChooser.getSelectedFile() + ".json");
+                                                                    fWriter.write(saveTextArea);
+                                                                }
+                                                                catch (Exception exception){
+                                                                    JOptionPane.showMessageDialog(saveItem,"Could not save item!");
+                                                                }
+                                                            }
+                                                        });
+                                                        menu.add(loadItem);
+                                                        menu.add(saveItem);
+                                                        menuBar.add(menu);
+                                                    }
+
+                                                    public JPanel searchBar()
+                                                    {
+                                                        JTextField searchTextField = new JTextField(20);
+                                                        searchTextField.getDocument().addDocumentListener(new DocumentListener() {
+                                                            @Override
+                                                            public void insertUpdate(DocumentEvent e) {
+                                                                filter();
+                                                            }
+                                                            @Override
+                                                            public void removeUpdate(DocumentEvent e) {
+                                                                filter();
+                                                            }
+                                                            @Override
+                                                            public void changedUpdate(DocumentEvent e) { }
+                                                            private void filter()   {
+                                                                String filter = searchTextField.getText();
+                                                                filterJList((DefaultListModel<String>)infoList.getModel(), filter);
+                                                            }
+                                                        });
+                                                        JPanel searchBar = new JPanel();
+                                                        JLabel searchLabel = new JLabel("Search :");
+                                                        searchBar.add(searchLabel);
+                                                        searchBar.add(searchTextField);
+                                                        return searchBar;
+                                                    }
+
+                                                    public void filterJList(DefaultListModel<String> inputJlist, String filter) {
+                                                        for (String curStr : tmpStr){
+                                                            if (!curStr.startsWith(filter)){
+                                                                if(inputJlist.contains(curStr)){
+                                                                    inputJlist.addElement(curStr);
+                                                                }
+                                                            }
+                                                            else    {
+                                                                if(!inputJlist.contains(curStr)){
+                                                                    inputJlist.addElement(curStr);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    private JList createJList() {
+                                                        JList list = new JList(initialList());
+                                                        list.setVisibleRowCount(100);
+                                                        return list;
+                                                    }
+
+                                                    public ListModel<String> initialList(){
+                                                        DefaultListModel<String> initialList = new DefaultListModel<>();
+                                                        for (String curStr : tmpStr){
+                                                            initialList.addElement(curStr);
+                                                        }
+                                                        return initialList;
+                                                    }
+
+                                                    public void getInformationMenu()
+                                                    {
+                                                        JMenu menu = new JMenu("Get Information");
+                                                        JMenuItem getPatientIdList = new JMenuItem("Patients' IDs");
+                                                        getPatientIdList.addActionListener(new ActionListener() {
+                                                            @Override
+                                                            public void actionPerformed(ActionEvent e) {
+                                                                try{
+                                                                    frame.add(new JScrollPane(infoList));
+                                                                    frame.add(searchBar(), BorderLayout.SOUTH);
+                                                                    frame.setVisible(true);
+                                                                }
+                                                                catch (Exception e1){
+                                                                    JOptionPane.showMessageDialog(frame,"No Entries");
+                                                                }
+
+                                                            }
+                                                        });
+                                                        menu.add(getPatientIdList);
+                                                        menuBar.add(menu);
+                                                    }
+
+                                                    public void MathematicsBar()
+                                                    {
+                                                        JMenu Mathematics = new JMenu("Statistics");
+                                                        JMenuItem Age = new JMenuItem("Avg. Age");
+                                                        JMenuItem BirthYear = new JMenuItem("Avg. Birth Year");
+                                                        JMenuItem AgeDistribution = new JMenuItem("Age Distribution");
+                                                        Age.addActionListener(new ActionListener() {
+                                                            @Override
+                                                            public void actionPerformed(ActionEvent e) {
+                                                                try {
+                                                                    int avgAge = model.getAverageAge();
+                                                                    JOptionPane.showMessageDialog(frame, "The Average Age is: " + avgAge);
+                                                                }
+                                                                catch (Exception exception){
+                                                                    JOptionPane.showMessageDialog(frame, "No Entries");
+                                                                }
+                                                            }
+                                                        });
+                                                        BirthYear.addActionListener(new ActionListener() {
+                                                            @Override
+                                                            public void actionPerformed(ActionEvent e) {
+                                                                try {
+                                                                    int birthYear = model.getAverageBirthYear();
+                                                                    JOptionPane.showMessageDialog(frame, "The Birth Year is: " + birthYear);
+                                                                }
+                                                                catch (Exception exception)
+                                                                {
+                                                                    JOptionPane.showMessageDialog(frame, "No entries");
+                                                                }
+                                                            }
+                                                        });
+                                                        AgeDistribution.addActionListener(new ActionListener() {
+                                                            @Override
+                                                            public void actionPerformed(ActionEvent e) {
+                                                                try {
+                                                                    float ageDistribution = model.getAgeDistribution();
+                                                                    JOptionPane.showMessageDialog(frame, "The Age Distribution is: " + ageDistribution);
+                                                                }
+                                                                catch (Exception exception)
+                                                                {
+                                                                    JOptionPane.showMessageDialog(frame, "No Entries" );
+                                                                }
+                                                            }
+                                                        });
+                                                        Mathematics.add(Age);
+                                                        Mathematics.add(BirthYear);
+                                                        Mathematics.add(AgeDistribution);
+                                                        menuBar.add(Mathematics);
+                                                    }
+
+
+
+
+                                                }
