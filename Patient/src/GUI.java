@@ -1,7 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -12,13 +16,8 @@ public class GUI {
     JFileChooser fileChooser = new JFileChooser();
     JFrame frame = new JFrame("Patient Viewer");
     String pathFile = null;
-    JButton go = new JButton("Go");
-    JTextField searchTextField = new JTextField(20);
     JMenuBar menuBar = new JMenuBar();
     Model model = new Model();
-    JButton[] buttons;
-    String searchInput;
-
 
     public void panelContainer()
     {
@@ -26,9 +25,8 @@ public class GUI {
         frame.setSize(500,500);
         frame.getContentPane().add(menuBar,BorderLayout.NORTH);
         fileLoadAndSave();
-        searchBar();
-        getInformationMenu();
         MathematicsBar();
+        getInformation();
         frame.setVisible(true);
     }
 
@@ -56,8 +54,20 @@ public class GUI {
                         int results = fileChooser.showOpenDialog(loadItem);
                         if(results == JFileChooser.APPROVE_OPTION){
                             pathFile = fileChooser.getSelectedFile().getAbsolutePath();
-                            model.readFile(pathFile);
-                            JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                            if (pathFile.endsWith(".csv")){
+                                model.readFile(pathFile);
+                                String input = model.getAllPatient();
+                                textArea.append(input);
+                                frame.setVisible(true);
+                                JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                            }
+                            else if (pathFile.endsWith(".json")){
+
+                                JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                            }
+                            else {
+                                JOptionPane.showMessageDialog(frame, "File cannot be read !");
+                            }
                         }
                     }
                 }
@@ -73,6 +83,7 @@ public class GUI {
                     String saveTextArea = textArea.getText();
                     FileWriter fWriter = new FileWriter(fileChooser.getSelectedFile() + ".json");
                     fWriter.write(saveTextArea);
+                    JOptionPane.showMessageDialog(saveItem,"File Saved!");
                 }
                 catch (Exception exception){
                     JOptionPane.showMessageDialog(saveItem,"Could not save item!");
@@ -82,98 +93,6 @@ public class GUI {
         menu.add(loadItem);
         menu.add(saveItem);
         menuBar.add(menu);
-    }
-
-    public void makeScrollForTextArea()
-    {
-        JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        frame.add(scroll,BorderLayout.CENTER);
-    }
-
-    public void searchBar()
-    {
-        JPanel searchBar = new JPanel();
-        JLabel searchLabel = new JLabel("Search :");
-        searchBar.add(searchLabel);
-        searchBar.add(searchTextField);
-        searchBar.add(go);
-        go.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                   searchInput = searchTextField.getText();
-                   JOptionPane.showMessageDialog(frame, "You Searched for: " + searchInput);
-                }
-                catch (Exception exception){}
-            }
-        });
-        frame.add(searchBar,BorderLayout.SOUTH);
-    }
-
-    public void getInformationMenu()
-    {
-        JMenu menu = new JMenu("Get Information");
-        JMenuItem getPatientIdList = new JMenuItem("Patients' IDs");
-
-        getPatientIdList.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    JPanel idPanel = new JPanel();
-                    idPanel.setLayout(new BoxLayout(idPanel, BoxLayout.Y_AXIS));
-                    List<String> str = model.getAllNames();
-                    buttons = new JButton[str.size()];
-                    for(int i = 0; i < str.size(); i ++)
-                    {
-                        buttons[i] = new JButton(str.get(i));
-                        int index = i;
-                        buttons[i].addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                try {
-
-                                    String patientInfoPrint = model.getSinglePatient(index);
-                                    textArea.setText(patientInfoPrint);
-                                    frame.add(textArea);
-                                    frame.setVisible(true);
-                                }
-                                catch (Exception exception)
-                                {
-                                    JOptionPane.showMessageDialog(frame,"No Information Available!");
-                                }
-                            }
-                        });
-                        idPanel.add(buttons[i]);
-                    }
-                    JScrollPane scroll = new JScrollPane(idPanel);
-                    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-                    frame.add(scroll);
-                    scroll.setVisible(true);
-                    frame.setVisible(true);
-                }
-                catch (Exception exception)
-                {
-                    JOptionPane.showMessageDialog(getPatientIdList,"No input File!");
-                }
-            }
-        });
-
-        menu.add(getPatientIdList);
-        menuBar.add(menu);
-    }
-
-    public void searchFilter()
-    {
-        String searchInput = searchTextField.getText();
-        for (JButton curButton : buttons)
-        {
-            String curButtonText = curButton.getText();
-            if(!curButtonText.startsWith(searchInput))
-            {
-                if(model)
-            }
-        }
     }
 
     public void MathematicsBar()
@@ -226,5 +145,85 @@ public class GUI {
         menuBar.add(Mathematics);
     }
 
+    public void getInformation(){
+        JMenu Information = new JMenu("Information");
+        JMenuItem Names = new JMenuItem("Patient Names");
+        Names.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    List<String> inputList = model.getAllNames();
+                    DefaultListModel<String> initialList = new DefaultListModel<>();
+                    for (String tmp : inputList){
+                        initialList.addElement(tmp);
+                    }
+                    JList list = new JList(initialList);
+                    list.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            JList list = (JList) e.getSource();
+                            if(e.getClickCount() == 2){
+                                int index = list.locationToIndex(e.getPoint());
+                                JOptionPane.showMessageDialog(frame,model.getSinglePatient(index));
+                            }
+                        }
+                    });
+                    JPanel searchBar = new JPanel();
+                    JLabel searchLabel = new JLabel("Search :");
+                    searchBar.add(searchLabel);
+                    JTextField output = textField(list, inputList);
+                    searchBar.add(output);
+                    frame.add(new JScrollPane(list));
+                    frame.add(searchBar,BorderLayout.SOUTH);
+                    frame.setVisible(true);
+
+                } catch (Exception exp){
+                    JOptionPane.showMessageDialog(frame, "No Entries");
+                }
+            }
+        });
+        Information.add(Names);
+        menuBar.add(Information);
+    }
+
+    public JTextField textField(JList input, List<String> inputStr){
+        final JTextField searchTextField = new JTextField(30);
+        searchTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filter();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filter();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) { }
+
+            public void filter(){
+                String filter = searchTextField.getText();
+                filterModel((DefaultListModel<String>)input.getModel(), filter, inputStr);
+
+            }
+        });
+        return searchTextField;
+    }
+
+    public void filterModel(DefaultListModel<String> model, String filterStr, List<String> inputStr) {
+        for (String s : inputStr) {
+            if (!s.startsWith(filterStr)) {
+                if (model.contains(s)) {
+                    model.removeElement(s);
+                }
+            } else {
+                if (!model.contains(s)) {
+                    model.addElement(s);
+                }
+            }
+        }
+    }
 
 }
+
