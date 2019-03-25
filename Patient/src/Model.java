@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -5,27 +6,15 @@ import java.util.*;
 
 public class Model {
     ReadCSV files = new ReadCSV();
-    Scanner sc = new Scanner(System.in);
     JSONFormatter json = new JSONFormatter();
     List<Patient> str;
+    private int index = 0;
 
 
     public List readFile(String input) throws FileNotFoundException {
         str = files.ReadCSV(input);
         return str;
     }
-
-    public List readJson(String input) throws FileNotFoundException{
-        sc.useDelimiter(",|}");
-        while(sc.hasNext()){
-            Patient patient = new Patient();
-            for (int i = 0; i< 20; i++){
-
-            }
-        }
-    }
-
-
 
     public String getAllPatient()
     {
@@ -107,4 +96,108 @@ public class Model {
         float ageDistribution = ((float) numberChildren / (float) numberParent);
         return ageDistribution * 1000;
     }
+
+    public String convertJson(String input) throws FileNotFoundException{
+        String tmpStr = new String();
+        Scanner sc =  new Scanner(new File(input));
+        sc.useDelimiter(",");
+        while (sc.hasNext()){
+            tmpStr += sc.next();
+        }
+        String removeTitlesAndBrackets = tmpStr.replaceAll("Zip|BirthPlace|Drivers|Address|Marital|Prefix|Gender|City|DeathDate|SSN|" +
+                                                                     "Passport|Last|Ethnicity|Suffix|Maiden|State|Race|ID|First|BirthDate|\"|}|\\{|]|\\[|patients", "");
+        String removeColon = removeTitlesAndBrackets.replaceAll(":",",");
+        String removeFirstComma = removeColon.replaceFirst(",","");
+        String removeWhiteSpaces = removeFirstComma.replaceAll("\\n|\\t","");
+        String finalStr = removeWhiteSpaces.replaceFirst(",","");
+        return finalStr;
+    }
+
+    public List readJson(String input) throws FileNotFoundException{
+        List<Patient> tmpList = new ArrayList<>();
+        String tmpStore = convertJson(input);
+        List<String> values = new ArrayList<>(Arrays.asList(tmpStore.split(",")));
+        Iterator<String> valueIterator = values.iterator();
+        while (valueIterator.hasNext()){
+            Patient patient = new Patient();
+            for(int i =0;i< 20;i++){
+                String curStr = valueIterator.next();
+                chooseMethods(curStr, patient);
+                ++index;
+            }
+            index = 0;
+            tmpList.add(patient);
+        }
+
+        str = tmpList;
+        return str;
+    }
+
+    private void chooseMethods(String fileInput, Patient patient)
+    {
+        switch (index){
+            case 0:
+                patient.setZip(fileInput);
+                break;
+            case 1:
+                patient.setBirthPlace(fileInput);
+                break;
+            case 2:
+                patient.setDrivers(fileInput);
+                break;
+            case 3:
+                patient.setAddress(fileInput);
+                break;
+            case 4:
+                patient.setMarital(fileInput);
+                break;
+            case 5:
+                patient.setPrefix(fileInput);
+                break;
+            case 6:
+                patient.setGender(fileInput);
+                break;
+            case 7:
+                patient.setCity(fileInput);
+                break;
+            case 8:
+                patient.setDeathDate(fileInput);
+                break;
+            case 9:
+                patient.setSSN(fileInput);
+                break;
+            case 10:
+                patient.setPassport(fileInput);
+                break;
+            case 11:
+                patient.setLast(fileInput);
+                break;
+            case 12:
+                patient.setEthnicity(fileInput);
+                break;
+            case 13:
+                patient.setSuffix(fileInput);
+                break;
+            case 14:
+                patient.setMaiden(fileInput);
+                break;
+            case 15:
+                patient.setState(fileInput);
+                break;
+            case 16:
+                patient.setRace(fileInput);
+                break;
+            case 17:
+                patient.setID(fileInput);
+                break;
+            case 18:
+                patient.setFirst(fileInput);
+                break;
+            case 19:
+                patient.setBirthDate(fileInput);
+                break;
+        }
+    }
+
+
 }

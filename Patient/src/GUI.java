@@ -6,13 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.List;
 
 public class GUI {
-    JTextArea textArea = new JTextArea();
     JFileChooser fileChooser = new JFileChooser();
     JFrame frame = new JFrame("Patient Viewer");
     String pathFile = null;
@@ -34,7 +34,7 @@ public class GUI {
     {
         JMenu menu = new JMenu("Files");
         JMenuItem loadItem = new JMenuItem("Load");
-        JMenuItem saveItem = new JMenuItem("Save");
+        JMenuItem saveItem = new JMenuItem("Save as JSON");
         loadItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,14 +56,11 @@ public class GUI {
                             pathFile = fileChooser.getSelectedFile().getAbsolutePath();
                             if (pathFile.endsWith(".csv")){
                                 model.readFile(pathFile);
-                                String input = model.getAllPatient();
-                                textArea.append(input);
-                                frame.setVisible(true);
-                                JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                                JOptionPane.showMessageDialog(frame, "CSV File Selected: " + pathFile);
                             }
                             else if (pathFile.endsWith(".json")){
-
-                                JOptionPane.showMessageDialog(frame, "File Selected: " + pathFile);
+                                model.readJson(pathFile);
+                                JOptionPane.showMessageDialog(frame, "JSON File Selected: " + pathFile);
                             }
                             else {
                                 JOptionPane.showMessageDialog(frame, "File cannot be read !");
@@ -80,9 +77,10 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    String saveTextArea = textArea.getText();
-                    FileWriter fWriter = new FileWriter(fileChooser.getSelectedFile() + ".json");
-                    fWriter.write(saveTextArea);
+                    String saveJson = model.getAllPatient();
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(fileChooser.getSelectedFile() + ".json"));
+                    writer.write(saveJson);
+                    writer.close();
                     JOptionPane.showMessageDialog(saveItem,"File Saved!");
                 }
                 catch (Exception exception){
@@ -148,6 +146,7 @@ public class GUI {
     public void getInformation(){
         JMenu Information = new JMenu("Information");
         JMenuItem Names = new JMenuItem("Patient Names");
+        JMenuItem allPatient = new JMenuItem("All Patients");
         Names.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -182,7 +181,22 @@ public class GUI {
                 }
             }
         });
+        allPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    String allPatientString = model.getAllPatient();
+                    JTextArea textArea = new JTextArea(allPatientString);
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    scrollPane.setPreferredSize(new Dimension(500,500));
+                    JOptionPane.showMessageDialog(frame, scrollPane,"All Patient Info", JOptionPane.YES_NO_OPTION);
+                }catch (Exception exp)  {
+                    JOptionPane.showMessageDialog(frame, "No Entries !");
+                }
+            }
+        });
         Information.add(Names);
+        Information.add(allPatient);
         menuBar.add(Information);
     }
 
