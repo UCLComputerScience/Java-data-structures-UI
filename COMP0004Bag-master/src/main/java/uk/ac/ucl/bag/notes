@@ -1,0 +1,35 @@
+if(size()<MAX_SIZE) {
+            if (!contains(value)) {
+                if (head == null)
+                {
+                    head  = new Node<>(value,1,null);
+                }
+
+                else
+                {
+                    Node<T> tmpNode = head;
+                    while (tmpNode != null)
+                    {
+                        tmpNode = head.next;
+                    }
+                    head.next = new Node<>(value,1,null);
+                }
+            }
+            else {
+                addWithValue(value);
+            }
+        }
+        else if (size()==MAX_SIZE && contains(value)) {
+            addWithValue(value);
+        }
+        else {
+            throw new BagException("Bag is full");
+        }
+    }
+
+    public void addWithValue(T value){
+        Node<T> tmpNode = head;
+        while(tmpNode != null && !tmpNode.value.equals(value)){
+            tmpNode = tmpNode.next;
+        }++tmpNode.occurrences;
+    }
