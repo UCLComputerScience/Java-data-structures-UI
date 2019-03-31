@@ -1,0 +1,28 @@
+
+<html>
+<head>
+  <title>Patient Data App</title>
+</head>
+<body>
+<div class="main">
+  <h1>Search Form</h1>
+  <form method="POST" action="/runSearch.html">
+    <select name = "type">
+      <option value="searchName">Search Name</option>
+      <option value="searchAgeRange">Search Age</option>
+    </select>
+    <input type="text" name="searchString" />
+    <br/>
+    Gender: <input type="text" name="searchGender" />
+    <br/>
+    City: <input type="text" name="searchCity" />
+    <br/>
+    State: <input type="text" name="searchState" />
+    <br/>
+    Race: <input type="text" name="searchRace" />
+    <br/>
+    <input type="submit" value="Search"/>
+  </form>
+</div>
+</body>
+</html>
