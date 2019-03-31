@@ -500,50 +500,7 @@ StringBuilder stringBuild = new StringBuilder();
                                                         menuBar.add(Mathematics);
                                                     }
 
-                                                }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                import java.sql.*;
-
-                                                public class storeToSql {
-                                                    static final String dBUrl = "jdbc:mysql://localhost:3306/javaTest";
-                                                    static final String user = "javaCw";
-                                                    static final String pass = "javaCw2";
-
-                                                    public static void main(String[] args){
-                                                        try{
-                                                            Class.forName("com.mysql.jdbc.Driver");
-                                                            Connection connection = DriverManager.getConnection(dBUrl,user,pass);
-                                                            Statement statement = connection.createStatement();
-                                                            ResultSet resultSet = statement.executeQuery("select * from emp");
-                                                            while (resultSet.next()){
-                                                                System.out.println(resultSet.getInt(1)+resultSet.getString(2));
-                                                                connection.close();
-                                                            }
-                                                        }
-                                                        catch (Exception e){
-                                                            System.out.println("Driver Class not loaded!");
-                                                            System.exit(1);
-                                                        }
-                                                    }
                                                 }

@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class JSONFormatter {
+public class JSONFormatter  {
     public String JSONFormatterAll(List<Patient> inputList)
     {
         StringBuilder str = new StringBuilder();
