@@ -1,5 +1,7 @@
 package uk.ac.ucl.bag;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Iterator;
 
 /**
@@ -36,9 +38,29 @@ public class Main
     System.out.println("}");
   }
 
+  public void loadBag(String fileInput)  {
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(fileInput));
+      String className = reader.readLine();
+      factory.setBagClass(className);
+      String outputReader;
+      Bag<String> testBag = factory.getBag();
+      while ((outputReader = reader.readLine()) != null){
+        String[] outputList = outputReader.split(" : ");
+        int occur = Integer.valueOf(outputList[1]);
+        testBag.addWithOccurrences(outputList[0], occur);
+      }
+      printAll(testBag);
+    }
+    catch (Exception e){
+      System.out.println(e.getMessage());
+    }
+  }
+
   public void go(String bagName)
   {
     factory.setBagClass(bagName);
+
 
     try
     {
@@ -75,25 +97,33 @@ public class Main
       printAll(bag3);
 
 
-      System.out.print("createMergedAllOccurrences:  ");
-      Bag<String> bag4 = bag1.createMergedAllOccurrences(bag3);
-      printAll(bag4);
+//      System.out.print("createMergedAllOccurrences:  ");
+//      Bag<String> bag4 = bag1.createMergedAllOccurrences(bag3);
+//      printAll(bag4);
+//
+//      System.out.print("createMergedAllUnique:       ");
+//      Bag<String> bag5 = bag1.createMergedAllUnique(bag3);
+//      print(bag5);
 
-      System.out.print("createMergedAllUnique:       ");
-      Bag<String> bag5 = bag1.createMergedAllUnique(bag3);
-      print(bag5);
 
-      System.out.println("------------toString test--------------");
-      String bag6 = bag2.toString();
-      System.out.println(bag6);
+//      System.out.println("----------subtract test----------------");
+//      Bag<String> bag7 = bag3.subtract(bag2);
+//      System.out.println(bag7);
+//
+//      System.out.println("------------toString test--------------");
+//      String bag6 = bag2.toString();
+//      System.out.println(bag6);
+//
+//      System.out.println("----------removeAllCopies test---------");
+//      bag3.removeAllCopies();
+//      System.out.println(bag3);
 
-      System.out.println("----------subtract test----------------");
-      Bag<String> bag7 = bag3.subtract(bag2);
-      System.out.println(bag7);
+        System.out.println("----------save bag test----------------");
+        bag3.saveBag();
 
-      System.out.println("----------removeAllCopies test---------");
-      bag3.removeAllCopies();
-      System.out.println(bag3);
+        System.out.println("----------load bag test-----------------");
+        System.out.print("test bag:        ");
+        loadBag("C:\\Users\\USER\\Desktop\\COMP0004Bag-master\\save.txt");
     }
     catch (BagException e)
     {
@@ -103,10 +133,10 @@ public class Main
 
   public static void main(String[] args)
   {
-//    System.out.println("------------ArrayBag------------");
-//    new Main().go("ArrayBag");
-//    System.out.println("------------MapBag---------------");
-//    new Main().go("MapBag");
+    System.out.println("------------ArrayBag------------");
+    new Main().go("ArrayBag");
+    System.out.println("------------MapBag---------------");
+    new Main().go("MapBag");
     System.out.println("------------LinkedListBag---------------");
     new Main().go("LinkedListBag");
   }
