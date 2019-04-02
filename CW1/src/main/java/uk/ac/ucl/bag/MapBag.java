@@ -48,7 +48,13 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
     @Override
     public void addWithOccurrences(T value, int occurrences) throws BagException {
         if(hmap.size()<MAX_SIZE){
-            hmap.put(value,occurrences);
+            if(hmap.containsKey(value)){
+                int x = hmap.get(value);
+                hmap.put(value,occurrences + x);
+            }
+            else {
+                hmap.put(value,occurrences);
+            }
         }
         else{
             throw new BagException("Bag is Full");
@@ -147,13 +153,4 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
         return new MapBagUniqueIterator();
     }
 
-    @Override
-    public String toString(){
-        ArrayList<T> keys = new ArrayList<T>(hmap.keySet());
-        String cString = "[ ";
-        for (int i = 0; i<hmap.size(); i ++){
-            T cKey = keys.get(i);
-            cString += keys.get(i) + " : " + hmap.get(cKey) + " , ";
-        }return cString + " ]";
-    }
 }

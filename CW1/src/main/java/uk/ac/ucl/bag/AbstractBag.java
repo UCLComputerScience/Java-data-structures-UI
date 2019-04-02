@@ -103,7 +103,7 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
         writer.newLine();
       }
       writer.close();
-      System.out.println("Bag Saved");
+      System.out.println(className + " Saved");
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }

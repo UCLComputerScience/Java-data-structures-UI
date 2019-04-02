@@ -199,12 +199,4 @@ public class ArrayBag<T extends Comparable> extends AbstractBag<T>
     return new ArrayBagIterator();
   }
 
-  @Override
-  public String toString(){
-    String cString = "[ ";
-    for (int i = 0; i< contents.size(); i++){
-      cString +=  contents.get(i).value + " : " + contents.get(i).count + " , ";
-    }
-    return cString + " ]";
-  }
 }
